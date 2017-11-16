@@ -1,0 +1,110 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Sample Swagger: Blog",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "jan.basoc@seer-technologies.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:5000",
+  "tags": [
+    {
+      "name": "post",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/new": {
+      "post": {
+        "tags": [
+          "blog post"
+        ],
+        "summary": "Add a new blog post",
+        "description": "",
+        "operationId": "addPost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Post object that needs to be added to the Blog",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/blogpostDB"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[{'title':title,'post':post, _id:id}]"
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "blog post"
+        ],
+        "summary": "Get all blog posts",
+        "description": "",
+        "operationId": "getPosts",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "[{'title':title,'post':post, _id:id}]"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "blogpostDB": {
+      "type": "object",
+      "required": [
+        "title",
+        "post"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "My First Blog Post"
+        },
+        "post": {
+          "type": "string",
+          "example": "Lorem Ipsum"
+        }
+      },
+      "xml": {
+        "name": "Pet"
+      }
+    }
+  }
+}
