@@ -1,0 +1,66 @@
+.body{
+  padding: 10;
+  font-family: Verdana, sans-serif;
+  background-color: #F7F7F7;
+}
+
+div{
+  background-color: #FBFBFB;
+}
+
+h1, h2, h3, h4, h5{
+  font-weight: normal;
+}
+
+.wrapper {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#input-title{
+  width: 100%;
+  font-size: 19px;
+  padding: 3px;
+}
+
+#input-post{
+  width: 100%;
+  font-size: 12px;
+  padding: 10px;
+}
+
+#input-submit{
+    width: 100px;
+    font-size: 50px;
+}
+
+.description{
+  width: 100%;
+  text-align: right;
+}
+
+.form-border {
+  background-color: #FBFBFB;
+	border: 3px solid #f1f1f1;
+	padding: 15px;
+}
+
+.blog-border{
+  border: 2px solid #f1f1f1;
+  margin-bottom: 5px;
+}
+
+.title{
+
+  border: 1px solid #f1f1f1;
+  padding: 5;
+}
+
+
+.post{
+
+  border: 1px solid #f1f1f1;
+  padding: 5;
+  padding-bottom: 20px;
+  font-size: 10px;
+}

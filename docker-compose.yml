@@ -1,0 +1,36 @@
+version: "2"
+services:
+  backend:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+        - docker_cont_network
+  swagger:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "80:8080"
+    environment:
+      - API_URL=http://localhost:8082/swagger.json
+    networks:
+      - docker_cont_network
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    ports:
+      - "8081:8080"
+    networks:
+      - docker_cont_network
+  frontend:
+      build: .
+      command: python -u app.py
+      ports:
+        - "5000:5000"
+      volumes:
+        - .:/app
+      links:
+        - backend
+      networks:
+        - docker_cont_network
+networks:
+  docker_cont_network:
+    driver: bridge
