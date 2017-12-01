@@ -79,11 +79,82 @@
         ],
         "responses": {
           "200": {
-            "description": "[{'title':title,'post':post, _id:id}]"
+            "description": "[{'_id':id}]"
           }
         }
       }
-    }
+    },
+    "/update/{obj_id}": {
+      "patch": {
+        "tags": [
+          "blog post"
+        ],
+        "summary": "Update a blog post",
+        "description": "",
+        "operationId": "updatePost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Update object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/blogpostDB"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[{'update_count':count}]"
+          }
+        }
+      }
+    },
+    "/delete/{obj_id}": {
+      "delete": {
+        "tags": [
+          "blog post"
+        ],
+        "summary": "Update a blog post",
+        "description": "",
+        "operationId": "updatePost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "obj_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[{'deleted_count':count}]"
+          }
+        }
+      }
+    },
   },
   "definitions": {
     "blogpostDB": {
