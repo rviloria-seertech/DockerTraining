@@ -11,14 +11,14 @@
 		<h2>Welcome to your blog</h2>
 		<form class="form-border" action="/add_post" method="POST">
 			<div class="title wrapper">
-				<input id="input-title" type="text" name="title" placeholder="Title"></input>
+				<input id="input-title" class="input-title" type="text" name="title" placeholder="Title"></input>
 			</div>
 
 			<div class="title wrapper">
-				<textarea id="input-post" name="post"></textarea>
+				<textarea id="input-post" class="input-post" name="post"></textarea>
 			</div>
 			<div  class="description wrapper">
-				<input type="submit" id="input-submit" value="POST"></input>
+				<input type="submit" class="input-submit" value="POST"></input>
 			</div>
 		</form>
 
@@ -26,13 +26,36 @@
 			<div class="blog-border">
 				<div class="title">
 					<div> {{ post.title }} </div>
+					<div class="post">
+						<div> {{ post.post }} </div>
+					</div>
+					<form class="form-border" id="{{'update-form-' + post._id}}" style='display:none' action="{{'/update_post/' + post._id}}" method="POST">
+						<div class="title wrapper">
+							<input id="{{'input-title-' + post._id}}" class="input-title" type="text" name="title" value="{{ post.title }}"></input>
+						</div>
+
+						<div class="title wrapper">
+							<textarea id="{{'input-post-' + post._id}}" class="input-post" name="post">{{ post.post }}</textarea>
+						</div>
+						<input type="submit" id="{{'update-btn-' + post._id}}" class="input-submit" value="UPDATE"></input>
+					</form>
+					<form class="form-border" action="{{'/delete_post/' + post._id}}" method="POST">
+						<input type="button" id="{{'show-update-btn-' + post._id}}" class="input-submit" onclick="showUpdate('{{post._id}}')" value="UPDATE"></input>
+						<input type="submit" id="{{'delete-btn-' + post._id}}"class="input-submit" value="DELETE"></input>
+					</form>
 				</div>
-				<div class="post">
-					<div> {{ post.post }} </div>
-				</div>
+				
 		  	</div>
 		{% endfor %}
-	
+		<script>
+			// document.onload = function({
+			function showUpdate(_id) {
+				console.log("inside");
+				document.getElementById('update-form-' + _id).style.display = 'block';
+				document.getElementById('show-update-btn-' + _id).style.display = 'none';
+			}
+			// });
+		</script>
 	</body>
 
 </html>

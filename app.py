@@ -15,7 +15,7 @@ class JSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-client = MongoClient('mongodb://backend:27017/dockerdemo')
+client = MongoClient('mongodb://backend:5432/dockerdemo')
 db = client.blogpostDB
 
 app = Flask(__name__)
@@ -34,6 +34,20 @@ def add_post():
     return redirect(url_for('landing_page'))
 
 
+@app.route('/update_post/<obj_id>', methods=['POST'])
+def update_post(obj_id):
+
+    update(obj_id)
+    return redirect(url_for('landing_page'))
+
+
+@app.route('/delete_post/<obj_id>', methods=['POST'])
+def delete_post(obj_id):
+
+    delete(obj_id)
+    return redirect(url_for('landing_page'))
+
+
 @app.route('/remove_all')
 def remove_all():
     db.blogpostDB.delete_many({})
@@ -47,29 +61,53 @@ def remove_all():
 
 @app.route("/posts", methods=['GET'])
 def get_all_posts():
-    
-    _posts = db.blogpostDB.find()
-    posts = [post for post in _posts]
+    posts = get_posts()
     return JSONEncoder().encode(posts)
 
 
 @app.route('/new', methods=['POST'])
 def new():
-
     item_doc = {
-        'title': request.form['title'],
-        'post': request.form['post']
+        'title': request.form.get('title', ''),
+        'post': request.form.get('post', '')
     }
-    db.blogpostDB.insert_one(item_doc)
+    _res = methodCU(*(item_doc,))
+    return JSONEncoder().encode({'_id': str(_res.inserted_id)})
 
-    _posts = db.blogpostDB.find()
-    posts = [post for post in _posts]
 
-    return JSONEncoder().encode(posts[-1])
+@app.route('/update/<obj_id>', methods=['PATCH'])
+def update(obj_id):
+    item_doc = {
+        'title': request.form.get('title', ''),
+        'post': request.form.get('post', '')
+    }
+    _res = methodCU(
+        *({'_id': ObjectId(obj_id)}, {'$set': item_doc}),
+        method='update_one'
+    )
+    return JSONEncoder().encode({'update_count': _res.modified_count})
+
+
+@app.route('/delete/<obj_id>', methods=['DELETE'])
+def delete(obj_id):
+    _res = delete_post({'_id': ObjectId(obj_id)})
+    return JSONEncoder().encode({'deleted_count': _res.deleted_count})
 
 
 ### Insert function here ###
+def methodCU(*args, **kwargs):
+    params = list(args)
+    method = kwargs.get('method', 'insert_one')
 
+    return getattr(db.blogpostDB, method)(*params)
+
+
+def delete_post(filter):
+    return db.blogpostDB.delete_one(filter)
+
+
+def get_posts():
+    return list(db.blogpostDB.find())
 
 
 ############################
@@ -77,4 +115,5 @@ def new():
 
 
 if __name__ == "__main__":
+
     app.run(host='0.0.0.0', debug=True)
